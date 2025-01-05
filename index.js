@@ -112,7 +112,7 @@ app.use('/form',form)
 app.use('/home',home)
 
 app.get('/', (req,res)=>{
-    res.redirect('/home')
+    res.redirect('/form/login')
 } )
 
 app.listen(PORT,()=>{

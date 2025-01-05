@@ -6,6 +6,9 @@ import "dotenv/config"
 import jwt from "jsonwebtoken";
 
 const router = Router()
+router.get('/login', (req, res) => {
+    res.redirect('http://localhost:5173/loginRegister')
+  })
 
 router.post('/register',async (req,res,next)=>{
     const {username,email,password} = req.body

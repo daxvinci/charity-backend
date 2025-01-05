@@ -8,27 +8,41 @@ import session from "express-session"
 import passport from "passport"
 import { User } from "./model/user.js"
 import { Strategy } from "passport-google-oauth20";
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import cors from 'cors';
+
+// Allow only your frontend's origin during development
+const corsOptions = {
+    origin: process.env.NODE_ENV === 'development' 
+        ? process.env.FRONTEND_URL // During development
+        : process.env.FRONTEND_URL, // Change this to the hosted domain later
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true, // Enable cookies/auth headers
+};
 
 
-// import { fileURLToPath } from 'url';
-// import { dirname, join } from 'path';
-
-
-// // Get the current directory (workaround for __dirname)
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = dirname(__filename);
+// Get the current directory (workaround for __dirname)
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const app = express()
-const PORT = 3000
+const PORT = process.env.PORT || 3000
 
+app.use(cors(corsOptions))
+// app.options('*', cors(corsOptions))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
-// app.use('/public/uploads',express.static(join(__dirname,'public','uploads')))
+app.use('/public/uploads',express.static(join(__dirname,'public','uploads')))
 app.use(session({
     secret: process.env.SECRET, // A secret string used to sign the session ID cookie
     resave: false, // Don't force a session to be saved if it wasn't modified
     saveUninitialized: false, // Don't save an uninitialized session
-    // cookie: { secure: false } // Set to true if using HTTPS
+    cookie: {
+        secure: process.env.NODE_ENV === 'production', // Use HTTPS in production
+        httpOnly: true, // Prevent JavaScript from accessing the cookie
+        maxAge: 24 * 60 * 60 * 1000, // Optional: 1-day cookie expiration
+    }, // Set to true if using HTTPS
 }));
 
 // Initialize passport and use passport.session() to handle login sessions
@@ -39,7 +53,7 @@ const GoogleStrategy = Strategy
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: `http://localhost:3000/${process.env.GOOGLE_CALLBACK_URL}`,
+    callbackURL: `${process.env.BACKEND_URL}/${process.env.GOOGLE_CALLBACK_URL}`,
     cookie:{}
   },
   async function(accessToken, refreshToken, profile, done) {

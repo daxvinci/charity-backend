@@ -67,7 +67,7 @@ router.post('/login',async (req,res,next)=>{
     }
     try{
         const user = await User.findOne({email:email})
-        if(!hashedPassword){
+        if(!user){
             res.json({error:'cant find user please confirm email or register'})
         }
         const valid = await bcrypt.compare(password,user.passwordHash)

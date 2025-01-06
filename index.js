@@ -14,9 +14,7 @@ import cors from 'cors';
 
 // Allow only your frontend's origin during development
 const corsOptions = {
-    origin: process.env.NODE_ENV === 'development' 
-        ? process.env.FRONTEND_URL // During development
-        : process.env.FRONTEND_URL, // Change this to the hosted domain later
+    origin: '*', // Change this to the hosted domain later
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     // credentials: true, // Enable cookies/auth headers
 };

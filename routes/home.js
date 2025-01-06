@@ -11,7 +11,7 @@ router.get('/',
         if (req.isAuthenticated()) {
             // User is already authenticated, show their data
             res.send(`Welcome ${req.user.username} with email of ${req.user.email}`)
-        } else {
+        }
             const authHeader = req.headers['authorization']
             const token = authHeader && authHeader.split(' ')[1] // Bearer TOKEN from front end
         // const token = req.params.id
@@ -28,9 +28,7 @@ router.get('/',
         }catch(err){
             next(err)
         }
-            // Redirect unauthenticated users to login
-            res.redirect('/form/login')
-        }
+        
 })
 
 export default router

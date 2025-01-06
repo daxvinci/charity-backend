@@ -14,9 +14,9 @@ import cors from 'cors';
 
 // Allow only your frontend's origin during development
 const corsOptions = {
-    origin: '*', // Change this to the hosted domain later
+    origin: 'http://localhost:5173', // Change this to the hosted domain later
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    // credentials: true, // Enable cookies/auth headers
+    credentials: true, // Enable cookies/auth headers
 };
 
 

@@ -60,7 +60,7 @@ router.post('/register',async (req,res,next)=>{
     }
 })
 
-router.post('/login',async (req,res)=>{
+router.post('/login',async (req,res,next)=>{
     const {email,password} = req.body
     if(!password || !email){
         res.json("missing input fields")

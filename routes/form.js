@@ -84,7 +84,6 @@ router.post('/login',async (req,res,next)=>{
             res.json({
                 message: "Login successful",
                 token,
-                redirect:"https://charity-backend-e7yk.onrender.com/home"
             })
         }else{
             res.json({error:'Incorrect Password'})

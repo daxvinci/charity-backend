@@ -20,11 +20,11 @@ router.post('/register',async (req,res,next)=>{
         const existingUserByUsername = await User.findOne({ username });
 
         if (existingUserByEmail) {
-            return res.status(400).json("Email already in use");
+            return res.status(400).json({error:"Email already in use"});
         }
 
         if (existingUserByUsername) {
-            return res.status(400).json("Username already in use");
+            return res.status(400).json({error:"Username already in use"});
         }
 
         const hashedPassword = await bcrypt.hash(password,10)
@@ -48,7 +48,7 @@ router.post('/register',async (req,res,next)=>{
                 {message: "Registration successful",token,}
             )
         }else{
-            res.json('Something went wrong')
+            res.json({error:'Something went wrong'})
         }
     }catch(err){
         // if (err.code === 11000) {
@@ -66,15 +66,14 @@ router.post('/login',async (req,res,next)=>{
         res.json("missing input fields")
     }
     try{
-        const hashedPassword = await findOne({email:email},'passwordHash')
+        const hashedPassword = await User.findOne({email:email},'passwordHash')
         if(!hashedPassword){
-            res.json({message:'cant find user please confirm email or register'})
+            res.json({error:'cant find user please confirm email or register'})
         }
         const valid = await bcrypt.compare(password,hashedPassword.passwordHash)
         if(valid){
             const token = jwt.sign(
                 {
-                    username,
                     email
                 },
                 process.env.SECRET,
@@ -83,7 +82,7 @@ router.post('/login',async (req,res,next)=>{
             console.log(token)
             res.json({message: "Login successful",token,})
         }else{
-            res.json({message:'Incorrect Password'})
+            res.json({error:'Incorrect Password'})
         }
     }catch(err){
         next(err)
@@ -94,7 +93,7 @@ router.get('/logout', (req, res) => {
     // localStorage.removeItem('token')
     req.logout(err => {
       if (err) {
-        return res.status(500).send("Error logging out")
+        return res.status(500).json({error:"Error logging out"})
       }
       req.session.destroy(() => {
         res.redirect('/')

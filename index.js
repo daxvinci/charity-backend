@@ -18,7 +18,7 @@ const corsOptions = {
         ? process.env.FRONTEND_URL // During development
         : process.env.FRONTEND_URL, // Change this to the hosted domain later
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    credentials: true, // Enable cookies/auth headers
+    // credentials: true, // Enable cookies/auth headers
 };
 
 
@@ -30,7 +30,7 @@ const app = express()
 const PORT = process.env.PORT || 3000
 
 app.use(cors(corsOptions))
-// app.options('*', cors(corsOptions))
+app.options('*', cors(corsOptions))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use('/public/uploads',express.static(join(__dirname,'public','uploads')))

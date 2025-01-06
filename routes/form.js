@@ -13,18 +13,18 @@ router.get('/login', (req, res) => {
 router.post('/register',async (req,res,next)=>{
     const {username,email,password} = req.body
     if(!username || !password || !email){
-        res.send("missing input fields")
+        res.json("missing input fields")
     }
     try{
         const existingUserByEmail = await User.findOne({ email });
         const existingUserByUsername = await User.findOne({ username });
 
         if (existingUserByEmail) {
-            return res.status(400).send("Email already in use");
+            return res.status(400).json("Email already in use");
         }
 
         if (existingUserByUsername) {
-            return res.status(400).send("Username already in use");
+            return res.status(400).json("Username already in use");
         }
 
         const hashedPassword = await bcrypt.hash(password,10)
@@ -44,9 +44,11 @@ router.post('/register',async (req,res,next)=>{
                 {expiresIn:'1h'}
             )
             console.log('user:',token,'saved:',saved)
-            res.json({token:token})
+            res.json(
+                {message: "Registration successful",token,}
+            )
         }else{
-            res.send('Something went wrong')
+            res.json('Something went wrong')
         }
     }catch(err){
         // if (err.code === 11000) {
@@ -61,12 +63,12 @@ router.post('/register',async (req,res,next)=>{
 router.post('/login',async (req,res)=>{
     const {email,password} = req.body
     if(!password || !email){
-        res.send("missing input fields")
+        res.json("missing input fields")
     }
     try{
         const hashedPassword = await findOne({email:email},'passwordHash')
         if(!hashedPassword){
-            res.send({message:'cant find user please confirm email or register'})
+            res.json({message:'cant find user please confirm email or register'})
         }
         const valid = await bcrypt.compare(password,hashedPassword.passwordHash)
         if(valid){
@@ -79,9 +81,9 @@ router.post('/login',async (req,res)=>{
                 {expiresIn:'1h'}
             )
             console.log(token)
-            res.json({token:token})
+            res.json({message: "Login successful",token,})
         }else{
-            res.send({message:'Incorrect Password'})
+            res.json({message:'Incorrect Password'})
         }
     }catch(err){
         next(err)

@@ -66,21 +66,26 @@ router.post('/login',async (req,res,next)=>{
         res.json("missing input fields")
     }
     try{
-        const hashedPassword = await User.findOne({email:email},'passwordHash')
+        const user = await User.findOne({email:email})
         if(!hashedPassword){
             res.json({error:'cant find user please confirm email or register'})
         }
-        const valid = await bcrypt.compare(password,hashedPassword.passwordHash)
+        const valid = await bcrypt.compare(password,user.passwordHash)
         if(valid){
             const token = jwt.sign(
                 {
-                    email
+                    username:user.username,
+                    eamil:user.email
                 },
                 process.env.SECRET,
                 {expiresIn:'1h'}
             )
-            console.log(token)
-            res.json({message: "Login successful",token,})
+            console.log('token: ',token)
+            res.json({
+                message: "Login successful",
+                token,
+                redirect:"https://charity-backend-e7yk.onrender.com/home"
+            })
         }else{
             res.json({error:'Incorrect Password'})
         }

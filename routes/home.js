@@ -12,9 +12,9 @@ router.get('/',
             // User is already authenticated, show their data
             res.send(`Welcome ${req.user.username} with email of ${req.user.email}`)
         } else {
-            // const authHeader = req.headers['authorization']
-        // const token = authHeader && authHeader.split(' ')[1] // Bearer TOKEN for front end
-        const token = req.params.id
+            const authHeader = req.headers['authorization']
+            const token = authHeader && authHeader.split(' ')[1] // Bearer TOKEN from front end
+        // const token = req.params.id
 
         if (!token) return res.status(401).json({ message: "Access Denied: No Token Provided" })
         

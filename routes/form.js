@@ -44,7 +44,7 @@ router.post('/register',async (req,res,next)=>{
                 {expiresIn:'1h'}
             )
             console.log('user:',token,'saved:',saved)
-            res.send({token})
+            res.json(token)
         }else{
             res.send('Something went wrong')
         }
@@ -79,7 +79,7 @@ router.post('/login',async (req,res)=>{
                 {expiresIn:'1h'}
             )
             console.log(token)
-            res.send({token:token})
+            res.json(token)
         }else{
             res.send({message:'Incorrect Password'})
         }

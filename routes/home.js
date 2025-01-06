@@ -10,7 +10,7 @@ router.get('/',
         
         if (req.isAuthenticated()) {
             // User is already authenticated, show their data
-            res.send(`Welcome ${req.user.username} with email of ${req.user.email}`)
+            return res.json({username: req.user.username, email: req.user.email})
         }
             const authHeader = req.headers['authorization']
             const token = authHeader && authHeader.split(' ')[1] // Bearer TOKEN from front end
@@ -24,7 +24,7 @@ router.get('/',
                 res.json({message:"User not verified"})
             }
             console.log(verified)
-            res.send(`Welcome ${verified.username}, with email: ${verified.email}`);
+            res.json({username: verified.username, email: verified.email});
         }catch(err){
             next(err)
         }

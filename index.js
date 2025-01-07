@@ -11,6 +11,7 @@ import { Strategy } from "passport-google-oauth20";
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import cors from 'cors';
+import MongoStore from "connect-mongo";
 
 // Allow only your frontend's origin during development
 const corsOptions = {
@@ -36,6 +37,11 @@ app.use(session({
     secret: process.env.SECRET, // A secret string used to sign the session ID cookie
     resave: false, // Don't force a session to be saved if it wasn't modified
     saveUninitialized: false, // Don't save an uninitialized session
+    store: MongoStore.create({
+        mongoUrl: process.env.CONNECTION_STRING, // Your MongoDB connection string
+        collectionName: "sessions", // Optional: Name of the collection to store sessions
+        ttl: 24 * 60 * 60, // Optional: Time to live for sessions (1 day)
+      }),
     cookie: {
         secure: process.env.NODE_ENV === 'production', // Use HTTPS in production
         httpOnly: true, // Prevent JavaScript from accessing the cookie

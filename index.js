@@ -51,7 +51,7 @@ const GoogleStrategy = Strategy
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: `${process.env.BACKEND_URL}/form/${process.env.GOOGLE_CALLBACK_URL}`,
+    callbackURL: `${process.env.BASE_URL}/form/${process.env.GOOGLE_CALLBACK_URL}`,
     cookie:{}
   },
   async function(accessToken, refreshToken, profile, done) {
@@ -110,7 +110,7 @@ app.use('/form',form)
 app.use('/home',home)
 
 app.get('/', (req,res)=>{
-    res.redirect('/form/login')
+    res.redirect('http://localhost:5173/loginRegister')
 } )
 
 app.listen(PORT,()=>{

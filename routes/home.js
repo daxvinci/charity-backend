@@ -10,6 +10,7 @@ router.get('/',
         
         if (req.isAuthenticated()) {
             // User is already authenticated, show their data
+            console.log("google was authenticated")
             return res.json({username: req.user.username, email: req.user.email})
         }
             const authHeader = req.headers['authorization']

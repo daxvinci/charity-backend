@@ -110,7 +110,7 @@ router.get('/auth/google',
     passport.authenticate('google', { scope: ['profile', 'email'] }))
   
 router.get(`/${process.env.GOOGLE_CALLBACK_URL}`, 
-    passport.authenticate('google', { failureRedirect: '/login' }),
+    passport.authenticate('google', { failureRedirect: 'http://localhost:5173/loginRegister' }),
     function(req, res) {
       // Successful authentication, redirect home
       res.redirect('/home');

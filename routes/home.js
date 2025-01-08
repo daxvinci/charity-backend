@@ -7,8 +7,9 @@ const router = Router()
 router.get('/', 
     // passport.authenticate('google', { failureRedirect: '/form/login' }),
     (req,res,next)=>{
-        console.log('auth: ', req.isAuthenticated())
-        console.log('user: ', req.user)
+        console.log('Session:', req.session);
+        console.log('isAuthenticated:', req.isAuthenticated());
+        console.log('User:', req.user);
         if (req.isAuthenticated()) {
             // User is already authenticated, show their data
             console.log("google was authenticated")

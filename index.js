@@ -35,7 +35,7 @@ app.use(express.json())
 app.use('/public/uploads',express.static(join(__dirname,'public','uploads')))
 app.use(session({
     secret: process.env.SECRET, // A secret string used to sign the session ID cookie
-    resave: false, // Don't force a session to be saved if it wasn't modified
+    resave: true, //  force a session to be saved if it wasn't modified
     saveUninitialized: false, // Don't save an uninitialized session
     store: MongoStore.create({
         mongoUrl: process.env.CONNECTION_STRING, // Your MongoDB connection string
@@ -48,7 +48,7 @@ app.use(session({
         maxAge: 24 * 60 * 60 * 1000, // Optional: 1-day cookie expiration
     }, // Set to true if using HTTPS
 }));
-
+app.set('trust proxy', 1)
 // Initialize passport and use passport.session() to handle login sessions
 app.use(passport.initialize())
 app.use(passport.session())

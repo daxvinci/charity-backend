@@ -88,7 +88,7 @@ passport.use(new GoogleStrategy({
 
 // Serialize and deserialize user
 passport.serializeUser((user, done) => {
-    console.log('Serializing user ID:', id); // Add this
+    console.log('Serializing user:', user); // Add this
     done(null, user.id); // Store user ID in the session
 });
 

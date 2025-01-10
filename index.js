@@ -35,7 +35,7 @@ app.use(express.json())
 app.use('/public/uploads',express.static(join(__dirname,'public','uploads')))
 app.use(session({
     secret: process.env.SECRET, // A secret string used to sign the session ID cookie
-    resave: true, // force a session to be saved if it wasn't modified
+    resave: false, // force a session to be saved if it wasn't modified
     saveUninitialized: false, // Don't save an uninitialized session
     store: MongoStore.create({
         mongoUrl: process.env.CONNECTION_STRING, // Your MongoDB connection string

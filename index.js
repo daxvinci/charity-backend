@@ -92,6 +92,8 @@ passport.serializeUser((user, done) => {
     done(null, user.id); // Store user ID in the session
 });
 
+console.log("im under serialize")
+
 passport.deserializeUser(async (id, done) => {
     console.log('Deserializing user ID:', id); // Add this
     try {

@@ -15,7 +15,7 @@ import MongoStore from "connect-mongo";
 
 // Allow only your frontend's origin during development
 const corsOptions = {
-    origin: 'http://localhost:5173', // Change this to the hosted domain later
+    origin: '*', // Change this to the hosted domain later
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true, // Enable cookies/auth headers
 };
@@ -40,7 +40,7 @@ app.use(session({
     store: MongoStore.create({
         mongoUrl: process.env.CONNECTION_STRING, // Your MongoDB connection string
         collectionName: "sessions", // Optional: Name of the collection to store sessions
-        ttl: 24 * 60 * 60, // Optional: Time to live for sessions (1 day)
+        ttl: 2 * 24 * 60 * 60, // Optional: Time to live for sessions (1 day)
       }),
     cookie: {
         secure: true, // Use HTTPS in production
@@ -57,7 +57,7 @@ const GoogleStrategy = Strategy
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: `${process.env.BASE_URL}/form/${process.env.GOOGLE_CALLBACK_URL}`,
+    callbackURL: `https://charity-backend-rfj9.onrender.com/form/auth/google/callback`,
     cookie:{}
   },
   async function(accessToken, refreshToken, profile, done) {

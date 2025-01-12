@@ -35,7 +35,7 @@ app.use(express.json())
 app.use('/public/uploads',express.static(join(__dirname,'public','uploads')))
 app.use(session({
     secret: process.env.SECRET, // A secret string used to sign the session ID cookie
-    resave: false, // force a session to be saved if it wasn't modified
+    resave: false, // dont force a session to be saved if it wasn't modified
     saveUninitialized: false, // Don't save an uninitialized session
     store: MongoStore.create({
         mongoUrl: process.env.CONNECTION_STRING, // Your MongoDB connection string
@@ -87,22 +87,36 @@ passport.use(new GoogleStrategy({
 ));
 
 // Serialize and deserialize user
-passport.serializeUser((user, done) => {
-    console.log('Serializing user:', user); // Add this
-    done(null, user.id); // Store user ID in the session
+passport.serializeUser((user, cb) => {
+    // console.log('Serializing user:', user); // Add this
+    // done(null, user.id); // Store user ID in the session
+    process.nextTick(function() {
+        return cb(null,user.id)
+      })
 });
 
 console.log("im under serialize")
 
-passport.deserializeUser(async (id, done) => {
+passport.deserializeUser(async (id, cb) => {
     console.log('Deserializing user ID:', id); // Add this
-    try {
-        const user = await User.findById(id); // Retrieve user from database
-        console.log('Deserialized user:', user);
-        done(null, user); // Done with the user object
-    } catch (err) {
-        done(err, null);
-    }
+    // try {
+    //     const user = await User.findById(id); // Retrieve user from database
+    //     console.log('Deserialized user:', user);
+    //     done(null, user); // Done with the user object
+    // } catch (err) {
+    //     done(err, null);
+    // }
+    process.nextTick(function() {
+
+         User.findById(id) // Retrieve user from the database
+        .then(user => {
+            console.log('Deserialized user:', user);
+            return cb(null, user); // Done with the user object
+        })
+        .catch(err => {
+            return cb(err, null); // Handle the error
+        });
+      })
 });
 
 app.use(handleErrors)

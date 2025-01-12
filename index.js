@@ -53,7 +53,7 @@ app.use(session({
 // Initialize passport and use passport.session() to handle login sessions
 app.use(passport.initialize())
 app.use(passport.session())
-const GoogleStrategy = Strategy
+// const GoogleStrategy = Strategy
 
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,

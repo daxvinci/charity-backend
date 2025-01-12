@@ -62,28 +62,51 @@ passport.use(new GoogleStrategy({
     passReqToCallback : true,
     cookie:{}
   },
-  async function(request,accessToken, refreshToken, profile, done) {
-    try {
-        // Check if user exists
-        let user = await User.findOne({ googleId: profile.id })
-
+  function(request,accessToken, refreshToken, profile, done) {
+    User.findOne({ googleId: profile.id })
+    .then(user => {
         if (!user) {
-          // Create a new user if none is found
-          user = await User.create({
+        // Create a new user if none is found
+        return User.create({
             googleId: profile.id,
             username: profile.displayName,
             email: profile.emails[0]?.value,
             avatar: profile.photos[0]?.value,
             provider: 'google',
-          });
+        });
         }
-
-        // Return the user
-        return done(null, user)
-      } catch (err) {
+        return user; // Return the found user
+    })
+    .then(user => {
+        // Return the user to Passport
+        return done(null, user);
+    })
+    .catch(err => {
         // Pass errors to Passport
-        return done(err, null)
-      }
+        return done(err, null);
+    });
+
+    // try {
+    //     // Check if user exists
+    //     let user = await User.findOne({ googleId: profile.id })
+
+    //     if (!user) {
+    //       // Create a new user if none is found
+    //       user = await User.create({
+    //         googleId: profile.id,
+    //         username: profile.displayName,
+    //         email: profile.emails[0]?.value,
+    //         avatar: profile.photos[0]?.value,
+    //         provider: 'google',
+    //       });
+    //     }
+
+    //     // Return the user
+    //     return done(null, user)
+    //   } catch (err) {
+    //     // Pass errors to Passport
+    //     return done(err, null)
+    //   }
     
   }
 ));

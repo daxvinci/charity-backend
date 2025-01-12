@@ -7,7 +7,8 @@ import "dotenv/config"
 import session from "express-session"
 import passport from "passport"
 import { User } from "./model/user.js"
-import { Strategy } from "passport-google-oauth20";
+// import { Strategy } from "passport-google-oauth20";
+import { Strategy as GoogleStrategy } from 'passport-google-oauth2'
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import cors from 'cors';
@@ -58,6 +59,7 @@ passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: `https://charity-backend-rfj9.onrender.com/form/auth/google/callback`,
+    passReqToCallback : true,
     cookie:{}
   },
   async function(accessToken, refreshToken, profile, done) {
@@ -88,7 +90,7 @@ passport.use(new GoogleStrategy({
 
 // Serialize and deserialize user
 passport.serializeUser((user, cb) => {
-    // console.log('Serializing user:', user); // Add this
+    console.log('Serializing user:', user) // Add this
     // done(null, user.id); // Store user ID in the session
     process.nextTick(function() {
         return cb(null,user.id)
@@ -98,7 +100,7 @@ passport.serializeUser((user, cb) => {
 console.log("im under serialize")
 
 passport.deserializeUser(async (id, cb) => {
-    console.log('Deserializing user ID:', id); // Add this
+    console.log('Deserializing user ID:', id) // Add this
     // try {
     //     const user = await User.findById(id); // Retrieve user from database
     //     console.log('Deserialized user:', user);

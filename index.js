@@ -44,7 +44,7 @@ app.use(session({
         ttl: 2 * 24 * 60 * 60, // Optional: Time to live for sessions (1 day)
       }),
     cookie: {
-        secure: true, // Use HTTPS in production
+        secure: false, // Use HTTPS in production
         httpOnly: true, // Prevent JavaScript from accessing the cookie
         maxAge: 24 * 60 * 60 * 1000, // Optional: 1-day cookie expiration
     }, // Set to true if using HTTPS

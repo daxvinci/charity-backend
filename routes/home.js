@@ -4,7 +4,7 @@ import "dotenv/config"
 
 const router = Router()
 
-router.post('/', 
+router.get('/', 
     // passport.authenticate('google', { failureRedirect: '/form/login' }),
     (req,res,next)=>{
         // console.log('Session:', req.session);

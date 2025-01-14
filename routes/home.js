@@ -15,8 +15,8 @@ router.get('/',
             console.log("google was authenticated")
             return res.json({username: req.user.username, email: req.user.email})
         }
-            const authHeader = req.headers['authorization']
-            const token = authHeader && authHeader.split(' ')[1] // Bearer TOKEN from front end
+            console.log(req.headers)
+            const token = req.headers['authorization']?.split(' ')[1];// Bearer TOKEN from front end
         // const token = req.params.id
 
         if (!token) return res.status(401).json({ message: "Access Denied: No Token Provided" })

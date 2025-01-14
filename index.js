@@ -16,7 +16,7 @@ import MongoStore from "connect-mongo";
 
 // Allow only your frontend's origin during development
 const corsOptions = {
-    origin: '*', // Change this to the hosted domain later
+    origin: 'http://localhost:5173', // Change this to the hosted domain later
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true, // Enable cookies/auth headers
 };
@@ -30,7 +30,7 @@ const app = express()
 const PORT = process.env.PORT || 3000
 
 app.use(cors(corsOptions))
-app.options('http://localhost:5173', cors(corsOptions))
+app.options('*', cors(corsOptions))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use('/public/uploads',express.static(join(__dirname,'public','uploads')))

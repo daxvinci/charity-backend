@@ -4,15 +4,15 @@ import "dotenv/config"
 
 const router = Router()
 
-router.get('/', 
+router.post('/', 
     // passport.authenticate('google', { failureRedirect: '/form/login' }),
     (req,res,next)=>{
-        console.log('Session:', req.session);
-        console.log('isAuthenticated:', req.isAuthenticated());
-        console.log('User:', req.user);
+        // console.log('Session:', req.session);
+        // console.log('isAuthenticated:', req.isAuthenticated());
+        // console.log('User:', req.user);
         if (req.isAuthenticated()) {
             // User is already authenticated, show their data
-            console.log("google was authenticated")
+            // console.log("google was authenticated")
             return res.json({username: req.user.username, email: req.user.email})
         }
             console.log('req.headers: ', req.headers)

@@ -120,7 +120,6 @@ passport.serializeUser((user, cb) => {
       })
 });
 
-console.log("im under serialize")
 
 passport.deserializeUser(async (id, cb) => {
     console.log('Deserializing user ID:', id) // Add this
